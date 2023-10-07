@@ -1,4 +1,4 @@
-module qqRobot
+module qrobot
 
 go 1.20
 
