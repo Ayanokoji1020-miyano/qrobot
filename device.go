@@ -1,4 +1,4 @@
-package qqRobot
+package qrobot
 
 import "fmt"
 
