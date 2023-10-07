@@ -2,7 +2,7 @@ package plugins
 
 import (
 	"fmt"
-	"qrobot/robot"
+	"github.com/Ayanokoji1020-miyano/qrobot/robot"
 	"strings"
 )
 

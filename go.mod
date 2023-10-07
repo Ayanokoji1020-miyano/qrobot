@@ -1,4 +1,4 @@
-module qrobot
+module github.com/Ayanokoji1020-miyano/qrobot
 
 go 1.20
 

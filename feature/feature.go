@@ -1,10 +1,10 @@
 package feature
 
 import (
+	"github.com/Ayanokoji1020-miyano/qrobot/feature/listeners"
+	"github.com/Ayanokoji1020-miyano/qrobot/feature/plugins"
+	"github.com/Ayanokoji1020-miyano/qrobot/robot"
 	logger "github.com/sirupsen/logrus"
-	"qrobot/feature/listeners"
-	"qrobot/feature/plugins"
-	"qrobot/robot"
 )
 
 func RegisterFeature(c *robot.Client) {

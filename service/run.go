@@ -2,8 +2,8 @@ package service
 
 import (
 	"context"
+	"github.com/Ayanokoji1020-miyano/qrobot/robot"
 	"os"
-	"qrobot/robot"
 	"time"
 )
 

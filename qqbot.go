@@ -2,10 +2,10 @@ package qrobot
 
 import (
 	"context"
+	"github.com/Ayanokoji1020-miyano/qrobot/service"
 	"log"
 	"os"
 	"os/signal"
-	"qrobot/service"
 )
 
 func Login(ctx context.Context, qq int64, protocol int) {

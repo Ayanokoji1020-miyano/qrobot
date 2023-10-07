@@ -2,12 +2,12 @@ package service
 
 import (
 	"errors"
+	"github.com/Ayanokoji1020-miyano/qrobot/consts"
+	"github.com/Ayanokoji1020-miyano/qrobot/robot"
 	"github.com/Mrs4s/MiraiGo/client"
 	logger "github.com/sirupsen/logrus"
 	"log"
 	"os"
-	"qrobot/consts"
-	"qrobot/robot"
 	"time"
 )
 

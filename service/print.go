@@ -4,6 +4,8 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
+	"github.com/Ayanokoji1020-miyano/qrobot/download"
+	"github.com/Ayanokoji1020-miyano/qrobot/robot"
 	"github.com/Mrs4s/MiraiGo/client"
 	"github.com/Mrs4s/MiraiGo/utils"
 	"github.com/mattn/go-colorable"
@@ -14,8 +16,6 @@ import (
 	"image/png"
 	"log"
 	"os"
-	"qrobot/download"
-	"qrobot/robot"
 	"strings"
 	"time"
 )

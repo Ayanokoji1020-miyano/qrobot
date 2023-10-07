@@ -1,10 +1,10 @@
 package plugins
 
 import (
+	"github.com/Ayanokoji1020-miyano/qrobot/consts"
+	"github.com/Ayanokoji1020-miyano/qrobot/robot"
 	"github.com/Mrs4s/MiraiGo/message"
 	logger "github.com/sirupsen/logrus"
-	"qrobot/consts"
-	"qrobot/robot"
 )
 
 func NewLogPluginInstance() *robot.Plugin {

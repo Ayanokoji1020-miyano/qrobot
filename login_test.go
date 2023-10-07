@@ -2,9 +2,9 @@ package qrobot
 
 import (
 	"context"
+	"github.com/Ayanokoji1020-miyano/qrobot/consts"
+	"github.com/Ayanokoji1020-miyano/qrobot/robot"
 	"os"
-	"qrobot/consts"
-	"qrobot/robot"
 	"testing"
 )
 

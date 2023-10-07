@@ -2,14 +2,14 @@ package qrobot
 
 import (
 	"context"
+	"github.com/Ayanokoji1020-miyano/qrobot/consts"
+	"github.com/Ayanokoji1020-miyano/qrobot/feature"
+	"github.com/Ayanokoji1020-miyano/qrobot/robot"
+	"github.com/Ayanokoji1020-miyano/qrobot/service"
 	"github.com/Mrs4s/MiraiGo/client"
 	logger "github.com/sirupsen/logrus"
 	"io/ioutil"
 	"os"
-	"qrobot/consts"
-	"qrobot/feature"
-	"qrobot/robot"
-	"qrobot/service"
 )
 
 var qqClient *robot.Client
