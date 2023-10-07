@@ -11,7 +11,7 @@ import (
 var c *robot.Client
 
 func TestMain(m *testing.M) {
-	c = robot.NewClient(2918752369, "")
+	c = robot.NewClient(000000000, "")
 	os.Exit(m.Run())
 }
 
