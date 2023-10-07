@@ -3,8 +3,8 @@ package qrobot
 import (
 	"context"
 	"os"
-	"qqRobot/consts"
-	"qqRobot/robot"
+	"qrobot/consts"
+	"qrobot/robot"
 	"testing"
 )
 

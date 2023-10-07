@@ -14,8 +14,8 @@ import (
 	"image/png"
 	"log"
 	"os"
-	"qqRobot/download"
-	"qqRobot/robot"
+	"qrobot/download"
+	"qrobot/robot"
 	"strings"
 	"time"
 )

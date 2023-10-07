@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 	"os/signal"
-	"qqRobot/service"
+	"qrobot/service"
 )
 
 func Login(ctx context.Context, qq int64, protocol int) {

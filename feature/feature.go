@@ -2,9 +2,9 @@ package feature
 
 import (
 	logger "github.com/sirupsen/logrus"
-	"qqRobot/feature/listeners"
-	"qqRobot/feature/plugins"
-	"qqRobot/robot"
+	"qrobot/feature/listeners"
+	"qrobot/feature/plugins"
+	"qrobot/robot"
 )
 
 func RegisterFeature(c *robot.Client) {

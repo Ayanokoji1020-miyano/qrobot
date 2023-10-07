@@ -6,10 +6,10 @@ import (
 	logger "github.com/sirupsen/logrus"
 	"io/ioutil"
 	"os"
-	"qqRobot/consts"
-	"qqRobot/feature"
-	"qqRobot/robot"
-	"qqRobot/service"
+	"qrobot/consts"
+	"qrobot/feature"
+	"qrobot/robot"
+	"qrobot/service"
 )
 
 var qqClient *robot.Client

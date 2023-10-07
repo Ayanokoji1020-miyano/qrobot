@@ -3,8 +3,8 @@ package listeners
 import (
 	"github.com/Mrs4s/MiraiGo/message"
 	logger "github.com/sirupsen/logrus"
-	"qqRobot/consts"
-	"qqRobot/robot"
+	"qrobot/consts"
+	"qrobot/robot"
 )
 
 func NewLogListenerInstance() *robot.ActionListener {

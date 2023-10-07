@@ -6,8 +6,8 @@ import (
 	logger "github.com/sirupsen/logrus"
 	"log"
 	"os"
-	"qqRobot/consts"
-	"qqRobot/robot"
+	"qrobot/consts"
+	"qrobot/robot"
 	"time"
 )
 
