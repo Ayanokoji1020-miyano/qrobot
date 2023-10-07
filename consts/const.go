@@ -27,3 +27,12 @@ const (
 var PluginMap = map[int]string{
 	PluginLogUID: "日志",
 }
+
+//------------------------------------------------ chan single ------------------------------------
+
+const (
+	ErrSingle           = "error"
+	LoginSuccessSingle  = "login success"
+	ScanSuccessSingle   = "scan success"
+	InstanceEmptySingle = "传入实例为空"
+)

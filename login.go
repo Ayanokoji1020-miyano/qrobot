@@ -2,11 +2,11 @@ package main
 
 import (
 	"context"
-	"errors"
 	"github.com/Mrs4s/MiraiGo/client"
 	logger "github.com/sirupsen/logrus"
 	"io/ioutil"
 	"os"
+	"qqRobot/consts"
 	"qqRobot/feature"
 	"qqRobot/robot"
 	"qqRobot/service"
@@ -56,12 +56,20 @@ func login(qq int64, pwd string, protocol int) error {
 	return nil
 }
 
-func LoginWithInstance(qqClient *robot.Client, protocol int) error {
+func LoginWithInstance(qqClient *robot.Client, sin chan string) {
+	if sin == nil {
+		sin = make(chan string, 1)
+	}
+	defer func() {
+		close(sin)
+	}()
+
 	if qqClient == nil {
-		return errors.New("传入实例为 nil")
+		sin <- consts.InstanceEmptySingle
+		return
 	}
 	device := new(client.DeviceInfo)
-	if err := device.ReadJson([]byte(deviceInfo(protocol))); err != nil {
+	if err := device.ReadJson([]byte(deviceInfo(ProtocolWatch))); err != nil {
 		logger.Infof("加载设备信息失败: %v", err)
 	}
 	qqClient.UseDevice(device)
@@ -79,10 +87,13 @@ func LoginWithInstance(qqClient *robot.Client, protocol int) error {
 	}
 
 	if !hasLogin {
-		err = service.QrcodeLogin(qqClient)
+		err = service.QrcodeLoginWithSingle(qqClient, sin)
+	} else {
+		sin <- consts.LoginSuccessSingle
 	}
 	if err != nil {
-		return err
+		sin <- err.Error()
+		return
 	}
 
 	feature.RegisterFeature(qqClient)
@@ -96,7 +107,7 @@ func LoginWithInstance(qqClient *robot.Client, protocol int) error {
 	service.Check(qqClient.ReloadGroupList(), true)
 	logger.Infof("共加载 %v 个群.", len(qqClient.GroupList))
 	logger.Info("加载完成")
-	return nil
+	return
 }
 
 func RunQQService(ctx context.Context, c *robot.Client) {
