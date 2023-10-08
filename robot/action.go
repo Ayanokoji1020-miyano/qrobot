@@ -1,10 +1,14 @@
 package robot
 
-import "github.com/Mrs4s/MiraiGo/message"
+import (
+	"github.com/Ayanokoji1020-miyano/qrobot/consts"
+	"github.com/Mrs4s/MiraiGo/message"
+)
 
 type ActionListener struct {
-	Uid  UID
-	Name string
+	ListenerLevel consts.Level
+	Uid           UID
+	Name          string
 	// 发送了私聊消息将会执行回调
 	SendPrivateMessage func(c *Client, message *message.PrivateMessage) bool
 	// 发送了组群消息将会执行回调

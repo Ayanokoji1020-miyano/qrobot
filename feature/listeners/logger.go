@@ -9,8 +9,9 @@ import (
 
 func NewLogListenerInstance() *robot.ActionListener {
 	return &robot.ActionListener{
-		Uid:  consts.ListenerLogUID,
-		Name: consts.ListenerMap[consts.ListenerLogUID],
+		ListenerLevel: consts.LevelFeature,
+		Uid:           consts.ListenerLogUID,
+		Name:          consts.ListenerMap[consts.ListenerLogUID],
 		SendPrivateMessage: func(c *robot.Client, message *message.PrivateMessage) bool {
 			buff, err := c.FormatMessageElements(message.Elements)
 			if err == nil {

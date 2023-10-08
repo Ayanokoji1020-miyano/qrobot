@@ -9,8 +9,9 @@ import (
 
 func NewLogPluginInstance() *robot.Plugin {
 	return &robot.Plugin{
-		Uid:  consts.PluginLogUID,
-		Name: consts.ListenerMap[consts.PluginLogUID],
+		PluginLevel: consts.LevelSystem,
+		Uid:         consts.PluginLogUID,
+		Name:        consts.ListenerMap[consts.PluginLogUID],
 		RCVMessage: func(client *robot.Client, messageInterface interface{}) bool {
 
 			if privateMessage, b := (messageInterface).(*message.PrivateMessage); b {

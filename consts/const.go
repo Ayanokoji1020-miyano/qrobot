@@ -8,6 +8,13 @@ const (
 	TypeTemp           = "TEMP"
 )
 
+type Level = int
+
+const (
+	LevelSystem  Level = 1 // 系统级别
+	LevelFeature       = 2 // 功能级别
+)
+
 //------------------------------------------------ action listeners ------------------------------------
 
 const (
@@ -21,18 +28,19 @@ var ListenerMap = map[int]string{
 //------------------------------------------------ plugins ------------------------------------
 
 const (
-	PluginLogUID = iota + 1 // 日志插件 uid
+	PluginMenuUID = iota + 1 // 菜单插件 uid
+	PluginLogUID             // 日志插件 uid
 )
 
 var PluginMap = map[int]string{
-	PluginLogUID: "日志",
+	PluginMenuUID: "菜单",
+	PluginLogUID:  "日志",
 }
 
 //------------------------------------------------ chan single ------------------------------------
 
 const (
-	ErrSingle           = "error"
 	LoginSuccessSingle  = "login success"
-	ScanSuccessSingle   = "scan success"
+	ScanSuccessSingle   = "请扫码登录"
 	InstanceEmptySingle = "传入实例为空"
 )

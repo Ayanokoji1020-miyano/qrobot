@@ -6,12 +6,14 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/Ayanokoji1020-miyano/qrobot/consts"
 	"github.com/Mrs4s/MiraiGo/client"
 	"github.com/Mrs4s/MiraiGo/message"
 	"github.com/sirupsen/logrus"
 	"os"
 	"reflect"
 	"runtime/debug"
+	"sort"
 	"strings"
 	"sync"
 )
@@ -68,15 +70,15 @@ func newClientMd5(uin int64, password [16]byte) *Client {
 
 // SetActionListenersAndPlugins 设置监听器以及插件
 func (c *Client) SetActionListenersAndPlugins(actionListeners []*ActionListener, plugins []*Plugin) error {
-	err := c.SetActionListeners(actionListeners)
+	err := c.SetActionListeners(actionListeners...)
 	if err != nil {
 		return err
 	}
-	return c.SetPlugins(plugins)
+	return c.SetPlugins(plugins...)
 }
 
 // SetActionListeners 设置监听器
-func (c *Client) SetActionListeners(actionListeners []*ActionListener) error {
+func (c *Client) SetActionListeners(actionListeners ...*ActionListener) error {
 	c.amux.Lock()
 	defer c.amux.Unlock()
 
@@ -84,12 +86,21 @@ func (c *Client) SetActionListeners(actionListeners []*ActionListener) error {
 		if action.Uid == 0 || action.Name == "" {
 			return errors.New("注册监听器错误: Uid和Name不能为零值")
 		}
-		_, ok := c.actionListeners[action.Uid]
-		if ok {
-			continue
-			c.logger.Info(fmt.Sprintf("不能重复注册监听器UID:%v", action.Uid))
-		}
+		//_, ok := c.actionListeners[action.Uid]
+		//if ok {
+		//	continue
+		//	c.logger.Info(fmt.Sprintf("不能重复注册监听器UID:%v", action.Uid))
+		//}
 		c.actionListeners[action.Uid] = action
+	}
+	return nil
+}
+
+// InsertActionListeners 插入或更新监听器
+func (c *Client) InsertActionListeners(actionListeners ...*ActionListener) error {
+	err := c.SetActionListeners(actionListeners...)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -122,22 +133,66 @@ func (c *Client) execActionListeners(fun func(actionListener *ActionListener) bo
 }
 
 // SetPlugins 设置插件
-func (c *Client) SetPlugins(plugins []*Plugin) error {
+func (c *Client) SetPlugins(plugins ...*Plugin) error {
 	c.pmux.Lock()
 	defer c.pmux.Unlock()
 
 	for _, p := range plugins {
+		if p.PluginLevel == 0 {
+			p.PluginLevel = consts.LevelFeature
+		}
 		if p.Uid == 0 || p.Name == "" {
 			return errors.New("注册监听器错误: Uid和Name不能为零值")
-		}
-		_, ok := c.plugins[p.Uid]
-		if ok {
-			continue
-			c.logger.Info(fmt.Sprintf("不能重复注册功能插件UID:%v", p.Uid))
 		}
 		c.plugins[p.Uid] = p
 	}
 	return nil
+}
+
+// InsertPlugins 插入或更新插件
+func (c *Client) InsertPlugins(plugins ...*Plugin) error {
+	err := c.SetPlugins(plugins...)
+	if err != nil {
+		return err
+	}
+	c.updateSystemMenuPlugin()
+	return nil
+}
+
+// 更新系统菜单插件
+func (c *Client) updateSystemMenuPlugin() {
+	delete(c.plugins, consts.PluginMenuUID)
+	p := &Plugin{
+		PluginLevel: consts.LevelSystem,
+		Uid:         consts.PluginMenuUID,
+		Name:        consts.PluginMap[consts.PluginMenuUID],
+		RCVMessage: func(client *Client, messageInterface interface{}) bool {
+			content := client.MessageContent(messageInterface)
+			if strings.EqualFold("系统功能", content) {
+				builder := strings.Builder{}
+				builder.WriteString("系统功能 : ")
+
+				var s []int
+				for k, p := range c.plugins {
+					if p.PluginLevel == consts.LevelSystem {
+						continue
+					}
+					s = append(s, k)
+				}
+				sort.Ints(s)
+				var idx int
+				for i := range s {
+					idx++
+					builder.WriteString(fmt.Sprintf("\n%v. %s", idx, c.plugins[i].Name))
+				}
+
+				client.ReplyText(messageInterface, builder.String())
+				return true
+			}
+			return false
+		},
+	}
+	c.SetPlugins(p)
 }
 
 // SetPluginBlocker 设置插件拦截器
@@ -147,9 +202,20 @@ func (c *Client) SetPluginBlocker(fun func(plugin *Plugin, contactType int, cont
 
 // RemovePlugin 移除插件
 func (c *Client) RemovePlugin(uid UID) {
+	p, ok := c.plugins[uid]
+	if !ok {
+		return
+	}
+
+	var up bool
+	up = p.PluginLevel == consts.LevelFeature
+
 	c.pmux.Lock()
 	defer c.pmux.Unlock()
 	delete(c.plugins, uid)
+	if up {
+		c.updateSystemMenuPlugin()
+	}
 }
 
 // 执行所有插件
@@ -380,7 +446,38 @@ func (c *Client) SendGroupTempMessage(groupCode, target int64, m *message.Sendin
 	return tempMessage
 }
 
-//------------------------------------------------ 临时使用 ------------------------------------
+// SendMessage 发送消息。
+//
+// group == 0, qq != 0: 发送私聊消息
+//
+// group != 0, qq == 0: 发送群消息
+//
+// group != 0, qq != 0: 发送临时消息
+func (c *Client) SendMessage(targetGroup, targetQQ int64, msg string) {
+	switch targetGroup != 0 {
+	case false:
+		if targetQQ != 0 {
+			c.SendPrivateMsg(targetQQ, msg)
+		} else {
+			return
+		}
+	case true:
+		if targetQQ == 0 {
+			c.SendGroupMsg(targetGroup, msg)
+		}
+
+		if targetQQ != 0 {
+			if targetQQ == targetGroup {
+				// targetGroup, targetQQ 都不为0, 且相等时发送私聊消息
+				c.SendPrivateMsg(targetQQ, msg)
+			} else {
+				c.SendGroupTempMsg(targetGroup, targetQQ, msg)
+			}
+		}
+	}
+}
+
+//------------------------------------------------ 开发临时使用 ------------------------------------
 
 // 显示用的日志
 

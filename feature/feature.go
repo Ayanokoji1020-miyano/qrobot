@@ -12,7 +12,7 @@ func RegisterFeature(c *robot.Client) {
 	actionsListeners := []*robot.ActionListener{
 		listeners.NewLogListenerInstance(),
 	}
-	c.SetActionListeners(actionsListeners)
+	c.SetActionListeners(actionsListeners...)
 	// 自定义组件
 	cPlugins := []*robot.Plugin{
 		plugins.NewLogPluginInstance(),
@@ -22,7 +22,7 @@ func RegisterFeature(c *robot.Client) {
 		plugins.NewMenuPluginInstance(cPlugins),
 	}
 	err := c.SetPlugins(
-		append(sPlugins, cPlugins...),
+		append(sPlugins, cPlugins...)...,
 	)
 	if err != nil {
 		logger.Error(err)

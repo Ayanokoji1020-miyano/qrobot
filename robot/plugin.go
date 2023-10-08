@@ -1,13 +1,15 @@
 package robot
 
 import (
+	"github.com/Ayanokoji1020-miyano/qrobot/consts"
 	"github.com/Mrs4s/MiraiGo/client"
 	"github.com/Mrs4s/MiraiGo/message"
 )
 
 type Plugin struct {
-	Uid  UID
-	Name string
+	PluginLevel consts.Level
+	Uid         UID
+	Name        string
 	// 收到私聊消息时
 	RCVPrivateMessage func(client *Client, privateMessage *message.PrivateMessage) bool
 	// 收到组群消息时
