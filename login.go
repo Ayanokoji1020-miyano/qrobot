@@ -18,7 +18,7 @@ func login(qq int64, pwd string, protocol int) error {
 	qqClient = robot.NewClient(qq, pwd)
 
 	device := new(client.DeviceInfo)
-	if err := device.ReadJson([]byte(deviceInfo(protocol))); err != nil {
+	if err := device.ReadJson([]byte(DeviceInfo(protocol))); err != nil {
 		logger.Infof("加载设备信息失败: %v", err)
 	}
 	qqClient.UseDevice(device)
@@ -69,7 +69,7 @@ func LoginWithInstance(qqClient *robot.Client, sin chan string) {
 		return
 	}
 	device := new(client.DeviceInfo)
-	if err := device.ReadJson([]byte(deviceInfo(ProtocolWatch))); err != nil {
+	if err := device.ReadJson([]byte(DeviceInfo(ProtocolWatch))); err != nil {
 		logger.Infof("加载设备信息失败: %v", err)
 	}
 	qqClient.UseDevice(device)

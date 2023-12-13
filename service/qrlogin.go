@@ -53,7 +53,7 @@ func QrcodeLogin(c *robot.Client) error {
 			if err != nil {
 				return err
 			}
-			return loginResponseProcessor(c, res)
+			return LoginResponseProcessor(c, res)
 		case client.QRCodeImageFetch, client.QRCodeWaitingForScan:
 			// ignore
 		}
@@ -109,7 +109,7 @@ func QrcodeLoginWithSingle(c *robot.Client, sin chan string) error {
 			if err != nil {
 				return err
 			}
-			return loginResponseProcessor(c, res)
+			return LoginResponseProcessor(c, res)
 		case client.QRCodeImageFetch, client.QRCodeWaitingForScan:
 			// ignore
 		}

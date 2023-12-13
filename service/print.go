@@ -50,7 +50,7 @@ func printQRCode(imgData []byte) {
 
 var ErrSMSRequestError = errors.New("sms request error")
 
-func loginResponseProcessor(c *robot.Client, res *client.LoginResponse) error {
+func LoginResponseProcessor(c *robot.Client, res *client.LoginResponse) error {
 	var err error
 	for {
 		if err != nil {

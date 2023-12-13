@@ -2,7 +2,7 @@ package qrobot
 
 import "fmt"
 
-func deviceInfo(protocol int) string {
+func DeviceInfo(protocol int) string {
 	cfg := `{
   "display": "MIRAI.211876.001",
   "product": "mirai",
